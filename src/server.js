@@ -3,24 +3,24 @@ import express from 'express';
 
 import { connectDB } from './config/mongodb';
 import { env } from './config/environment';
-import { BoardModel } from './models/board.model';
-
+import { apiV1 } from './routes/v1';
 connectDB()
-  .then(() => console.log('success'))
-  .then(() => bootServer())
-  .catch((error) => {
-    console.error(error);
-    process.exit(1);
-  });
+    .then(() => console.log('success'))
+    .then(() => bootServer())
+    .catch((error) => {
+        console.error(error);
+        process.exit(1);
+    });
 
 const bootServer = () => {
-  const app = express();
+    const app = express();
 
-  app.get('/test', async (req, res) => {
-    res.send('Hello World!');
-  });
+    //enable req.body
+    app.use(express.json());
 
-  app.listen(env.APP_PORT, () => {
-    console.log(`Example app listening on port ${env.APP_PORT}`);
-  });
+    app.use('/v1', apiV1);
+
+    app.listen(env.APP_PORT, () => {
+        console.log(`Example app listening on port ${env.APP_PORT}`);
+    });
 };
