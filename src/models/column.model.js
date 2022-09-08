@@ -19,11 +19,41 @@ const validateSchema = async (data) => {
     });
 };
 
+const findOneById = async (id) => {
+    try {
+        const result = await getDB()
+            .collection(columnCollectionName)
+            .findOne({ _id: ObjectId(id) });
+        return result;
+    } catch (error) {
+        throw new Error(error);
+    }
+};
+
 const createNew = async (data) => {
     try {
-        const value = await validateSchema(data);
-        const result = await getDB().collection(columnCollectionName).insertOne(value);
-        return result.ops[0];
+        const validatedValue = await validateSchema(data);
+        const insertValue = {
+            ...validatedValue,
+            boardId: ObjectId(validatedValue.boardId),
+        };
+        const result = await getDB().collection(columnCollectionName).insertOne(insertValue);
+        return result;
+    } catch (error) {
+        throw new Error(error);
+    }
+};
+
+const pushCardOder = async (columnId, cardId) => {
+    try {
+        const result = await getDB()
+            .collection(columnCollectionName)
+            .findOneAndUpdate(
+                { _id: ObjectId(columnId) },
+                { $push: { cardOder: cardId } },
+                { returnDocument: 'after' },
+            );
+        return result.value;
     } catch (error) {
         throw new Error(error);
     }
@@ -33,7 +63,7 @@ const update = async (id, data) => {
     try {
         const result = await getDB()
             .collection(columnCollectionName)
-            .findOneAndUpdate({ _id: ObjectId(id) }, { $set: data }, { returnOriginal: false });
+            .findOneAndUpdate({ _id: ObjectId(id) }, { $set: data }, { returnDocument: 'after' });
         console.log(result);
         return result.value;
     } catch (error) {
@@ -41,4 +71,4 @@ const update = async (id, data) => {
     }
 };
 
-export const ColumnModel = { createNew, update };
+export const ColumnModel = { createNew, update, findOneById, pushCardOder, columnCollectionName };

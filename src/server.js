@@ -4,6 +4,7 @@ import express from 'express';
 import { connectDB } from './config/mongodb';
 import { env } from './config/environment';
 import { apiV1 } from './routes/v1';
+
 connectDB()
     .then(() => console.log('success'))
     .then(() => bootServer())

@@ -1,21 +1,20 @@
-import { MongoClient } from "mongodb";
-require("dotenv").config();
-import { env } from "./environment";
+import { MongoClient } from 'mongodb';
+import { env } from './environment';
 
 let dbInstant = null;
 
 export const connectDB = async () => {
-  const client = new MongoClient(env.MONGODB_URI, {
-    useUnifiedTopology: true,
-    useNewUrlParser: true,
-  });
+    const client = new MongoClient(env.MONGODB_URI, {
+        useUnifiedTopology: true,
+        useNewUrlParser: true,
+    });
 
-  await client.connect();
+    await client.connect();
 
-  dbInstant = client.db(env.DATABASE_NAME);
+    dbInstant = client.db(env.DATABASE_NAME);
 };
 
 export const getDB = () => {
-  if (!dbInstant) throw new Error("Must connect to DB");
-  return dbInstant;
+    if (!dbInstant) throw new Error('Must connect to DB');
+    return dbInstant;
 };
