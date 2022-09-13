@@ -5,7 +5,6 @@ const createNew = async (data) => {
     try {
         const createdCard = await CardModel.createNew(data);
         const getNewCard = await CardModel.findOneById(createdCard.insertedId);
-        // console.log(getNewCard.columnId);
 
         await ColumnModel.pushCardOder(getNewCard.columnId.toString(), getNewCard._id.toString());
         return getNewCard;
@@ -14,4 +13,20 @@ const createNew = async (data) => {
     }
 };
 
-export const CardService = { createNew };
+const update = async (id, data) => {
+    try {
+        const updateData = {
+            ...data,
+            updateAt: Date.now(),
+        };
+        if (updateData._id) delete updateData._id;
+        const updatedCard = await CardModel.update(id, updateData);
+
+        return updatedCard;
+    } catch (error) {
+        console.log(error);
+        throw new Error(error);
+    }
+};
+
+export const CardService = { createNew, update };
