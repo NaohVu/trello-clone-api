@@ -6,4 +6,4 @@ export const HttpStatusCode = {
     INTERNAL_SERVER: 500,
 };
 
-export const WHITELIST_DOMAIN = ['http://localhost:3000', 'http://localhost:3002'];
+export const WHITELIST_DOMAIN = ['https://trello-clone-cb9f8.web.app/'];

@@ -25,7 +25,7 @@ const bootServer = () => {
 
     app.use('/v1', apiV1);
 
-    app.listen(env.APP_PORT, () => {
-        console.log(`Example app listening on port ${env.APP_PORT}`);
+    app.listen(env.APP_PORT || process, env.PORT, () => {
+        console.log(`Example app listening on port `);
     });
 };
